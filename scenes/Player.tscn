@@ -43,4 +43,14 @@ current = true
 script = ExtResource( 2 )
 offset = Vector3( 0, 4, 6 )
 
+[node name="SlowdownTimer" type="Timer" parent="."]
+wait_time = 7.0
+one_shot = true
+
+[node name="SpeedUpTimer" type="Timer" parent="."]
+wait_time = 7.0
+one_shot = true
+
 [connection signal="area_entered" from="Area" to="." method="_on_Area_area_entered"]
+[connection signal="timeout" from="SlowdownTimer" to="." method="_on_SlowdownTimer_timeout"]
+[connection signal="timeout" from="SpeedUpTimer" to="." method="_on_SpeedUpTimer_timeout"]

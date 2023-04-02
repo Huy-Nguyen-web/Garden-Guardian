@@ -1,16 +1,21 @@
 extends KinematicBody
 
-export var speed = 10.0
+export var normal_speed = 10.0
 export var fast_speed = 20.0
 export var low_speed = 5.0
 export var gravity = -100.0
 export var jump_impulse = 20.0
 
+onready var slowdown_timer = $SlowdownTimer
+onready var speed_up_timer = $SpeedUpTimer
+
+
 var velocity = Vector3.ZERO
+var speed
 
 
 func _ready():
-	pass # Replace with function body.
+	speed = normal_speed
 
 
 func _process(delta):
@@ -46,5 +51,19 @@ func _process(delta):
 func _on_Area_area_entered(area):
 	if area.is_in_group("flower"):
 		print("Reach the flower")
+	
+	if area.is_in_group("speed_up"):
+		speed = fast_speed
+		speed_up_timer.start()
+		
+	if area.is_in_group("slow_down"):
+		speed = low_speed
+		slowdown_timer.start()
 
 
+func _on_SpeedUpTimer_timeout():
+	speed = normal_speed
+
+
+func _on_SlowdownTimer_timeout():
+	speed = normal_speed
