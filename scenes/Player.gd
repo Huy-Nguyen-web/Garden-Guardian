@@ -8,14 +8,17 @@ export var jump_impulse = 20.0
 
 onready var slowdown_timer = $SlowdownTimer
 onready var speed_up_timer = $SpeedUpTimer
+onready var lives_count_label = $Control/LivesCountLabel
 
 
 var velocity = Vector3.ZERO
-var speed
+var speed = normal_speed
 
+var lives = 3
 
 func _ready():
 	speed = normal_speed
+	update_lives_label(lives)
 
 
 func _process(delta):
@@ -48,15 +51,25 @@ func _process(delta):
 	velocity = move_and_slide(velocity, Vector3.UP)
 
 
+func update_lives_label(lives):
+	lives_count_label.text = "Lives: " + str(lives)
+	
+
 func _on_Area_area_entered(area):
 	if area.is_in_group("flower"):
 		print("Reach the flower")
-	
+		
+	if area.is_in_group("enemy"):
+		lives -= 1
+		update_lives_label(lives)
+
 	if area.is_in_group("speed_up"):
+		area.queue_free()
 		speed = fast_speed
 		speed_up_timer.start()
-		
+
 	if area.is_in_group("slow_down"):
+		area.queue_free()
 		speed = low_speed
 		slowdown_timer.start()
 
