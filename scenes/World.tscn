@@ -25,6 +25,7 @@ background_sky = SubResource( 4 )
 [node name="World" type="Spatial"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+jump_impulse = 30.0
 
 [node name="Ground" type="MeshInstance" parent="."]
 mesh = SubResource( 3 )

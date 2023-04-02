@@ -3,7 +3,8 @@ extends KinematicBody
 export var speed = 10.0
 export var fast_speed = 20.0
 export var low_speed = 5.0
-export var gravity = -10.0
+export var gravity = -100.0
+export var jump_impulse = 20.0
 
 var velocity = Vector3.ZERO
 
@@ -33,6 +34,11 @@ func _process(delta):
 	
 	velocity.x = move_dir.x * speed
 	velocity.z = move_dir.z * speed
+	
+	if is_on_floor() and Input.is_action_pressed("jump"):
+		velocity.y += jump_impulse
+		
+	velocity.y += gravity * delta
 	
 	velocity = move_and_slide(velocity, Vector3.UP)
 
