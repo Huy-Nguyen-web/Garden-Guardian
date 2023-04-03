@@ -10,7 +10,6 @@ onready var slowdown_timer = $SlowdownTimer
 onready var speed_up_timer = $SpeedUpTimer
 onready var lives_count_label = $Control/LivesCountLabel
 
-
 var velocity = Vector3.ZERO
 var speed = normal_speed
 
@@ -39,10 +38,11 @@ func _process(delta):
 		move_dir = move_dir.normalized()
 #		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), speed * delta)
 		look_at(translation + move_dir, Vector3.UP)
-	
+#
 	velocity.x = move_dir.x * speed
 	velocity.z = move_dir.z * speed
 	
+
 	if is_on_floor() and Input.is_action_pressed("jump"):
 		velocity.y += jump_impulse
 		
@@ -57,10 +57,12 @@ func update_lives_label(lives):
 
 func _on_Area_area_entered(area):
 	if area.is_in_group("flower"):
-		print("Reach the flower")
+		get_tree().change_scene("res://scenes/WinScreen.tscn")
 		
 	if area.is_in_group("enemy"):
 		lives -= 1
+		if lives <= 0:
+			get_tree().change_scene("res://scenes/GameOverScreen.tscn")
 		update_lives_label(lives)
 
 	if area.is_in_group("speed_up"):

@@ -1,6 +1,11 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Flower.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Berry.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/Spike.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Rock.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Enemy.gd" type="Script" id=6]
 
 [sub_resource type="PlaneMesh" id=3]
 size = Vector2( 200, 200 )
@@ -18,27 +23,13 @@ sky_top_color = Color( 0.188235, 0.709804, 1, 1 )
 background_mode = 2
 background_sky = SubResource( 4 )
 
-[sub_resource type="BoxShape" id=9]
+[sub_resource type="BoxShape" id=8]
 
-[sub_resource type="CubeMesh" id=10]
-
-[sub_resource type="BoxShape" id=11]
-
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 1, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=13]
-material = SubResource( 12 )
-
-[sub_resource type="SpatialMaterial" id=14]
-albedo_color = Color( 0.623529, 0.956863, 0.129412, 1 )
-
-[sub_resource type="CubeMesh" id=15]
-material = SubResource( 14 )
-
-[sub_resource type="BoxShape" id=16]
-
-[sub_resource type="PrismMesh" id=17]
+[sub_resource type="CapsuleMesh" id=10]
+material = SubResource( 9 )
 
 [node name="World" type="Spatial"]
 
@@ -62,39 +53,26 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 5 )
 
-[node name="Flower" type="Area" parent="." groups=["flower"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17202, -71.7562 )
+[node name="Flower" parent="." instance=ExtResource( 2 )]
 
-[node name="CollisionShape" type="CollisionShape" parent="Flower"]
-shape = SubResource( 9 )
+[node name="Rock" parent="." instance=ExtResource( 5 )]
 
-[node name="FlowerMesh" type="MeshInstance" parent="Flower"]
+[node name="Berry" parent="." instance=ExtResource( 3 )]
+
+[node name="Spike" parent="." instance=ExtResource( 4 )]
+
+[node name="Enemy" type="Area" parent="." groups=["enemy"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.77993, 2.74582, -32.909 )
+script = ExtResource( 6 )
+start_pos = Vector3( -8, 1, -32 )
+end_pos = Vector3( 8, 1, -32 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Enemy"]
+shape = SubResource( 8 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Enemy"]
 mesh = SubResource( 10 )
 
-[node name="Rock" type="Area" parent="." groups=["slow_down"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3224, 1.08721, -20.0048 )
+[node name="Tween" type="Tween" parent="Enemy"]
 
-[node name="CollisionShape" type="CollisionShape" parent="Rock"]
-shape = SubResource( 11 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Rock"]
-mesh = SubResource( 13 )
-
-[node name="Berry" type="Area" parent="." groups=["speed_up"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.32452, 1.08721, -20.0048 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Berry"]
-shape = SubResource( 11 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Berry"]
-mesh = SubResource( 15 )
-
-[node name="Spike" type="Area" parent="." groups=["enemy"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55218, -15.3724 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Spike"]
-shape = SubResource( 16 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Spike"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.622352, 0 )
-mesh = SubResource( 17 )
+[connection signal="tween_all_completed" from="Enemy/Tween" to="Enemy" method="_on_Tween_tween_all_completed"]

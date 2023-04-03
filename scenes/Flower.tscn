@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="BoxShape" id=9]
+
+[sub_resource type="CubeMesh" id=10]
+
+[node name="Flower" type="Area" groups=["flower"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17202, -71.7562 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 9 )
+
+[node name="FlowerMesh" type="MeshInstance" parent="."]
+mesh = SubResource( 10 )
