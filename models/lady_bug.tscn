@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://models/lady_bug.glb" type="PackedScene" id=1]
+
+[node name="lady_bug" instance=ExtResource( 1 )]
