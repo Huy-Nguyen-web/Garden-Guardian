@@ -41,8 +41,8 @@ func _process(delta):
 
 	if move_dir != Vector3.ZERO:
 		move_dir = move_dir.normalized()
-		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), speed * delta)
-#		look_at(translation + move_dir, Vector3.UP)
+#		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), speed * delta)
+		look_at(translation + move_dir, Vector3.UP)
 #
 	velocity.x = move_dir.x * speed
 	velocity.z = move_dir.z * speed
@@ -56,7 +56,7 @@ func _process(delta):
 	
 	velocity = move_and_slide(velocity, Vector3.UP)
 		
-	if got_hurt:
+	if got_hurt == true:
 		player_flickering(delta)
 
 
@@ -90,9 +90,13 @@ func _on_Area_area_entered(area):
 func player_flickering(delta):
 	flickering_time += delta
 	if flickering_time > 0.1:
-		lady_bug_model.visible = !lady_bug_model.visible
+#		lady_bug_model.visible = !lady_bug_model.visible
+		if lady_bug_model.visible == true:
+			lady_bug_model.visible = false
+		else:
+			lady_bug_model.visible = true
+
 		flickering_time = 0
-		
 
 
 func _on_SpeedUpTimer_timeout():

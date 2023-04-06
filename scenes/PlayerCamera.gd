@@ -10,7 +10,7 @@ func _ready():
 
 
 func _process(delta):
-#	global_translation = player.global_translation + offset
-	global_translation = lerp(global_translation, player.global_translation + offset, move_speed * delta)
+	global_translation = player.global_translation + offset
+#	global_translation = lerp(global_translation, player.global_translation + offset, move_speed * delta)
 
 
